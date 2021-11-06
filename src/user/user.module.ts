@@ -18,5 +18,6 @@ import { UserController } from './user.controller';
     ]),
     RoleModule,
   ],
+  exports: [UserService],
 })
 export class UserModule {}
