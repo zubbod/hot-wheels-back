@@ -8,9 +8,9 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { RoleModel } from 'src/role/role.model';
-import { UserCreationAttr } from 'src/user/interfaces/user.interface';
-import { UserRolesModel } from 'src/user/user-roles.model';
+import { RoleModel } from 'src/models/role.model';
+import { UserCreationAttr } from 'src/core/interfaces/user.interface';
+import { UserRolesModel } from 'src/modules/user/user-roles.model';
 
 @Table({ tableName: 'users' })
 export class UserModel extends Model<UserModel, UserCreationAttr> {

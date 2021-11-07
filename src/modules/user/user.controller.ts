@@ -13,11 +13,11 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/core/guards/auth.guard';
 import { RolesGuard } from 'src/core/guards/roles.guard';
-import { Roles } from 'src/role/decorators/roles.decorator';
-import { RoleEnum } from 'src/role/enum/role.enum';
-import { UserDto } from 'src/user/dto/user.dto';
-import { UserModel } from 'src/user/user.model';
-import { UserService } from 'src/user/user.service';
+import { Roles } from 'src/core/decorators/roles.decorator';
+import { RoleEnum } from 'src/core/enum/role.enum';
+import { UserDto } from 'src/modules/user/dto/user.dto';
+import { UserModel } from 'src/models/user.model';
+import { UserService } from 'src/modules/user/user.service';
 
 @ApiTags('User Controller')
 @Controller('users')

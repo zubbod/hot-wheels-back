@@ -6,10 +6,10 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { RoleEnum } from 'src/role/enum/role.enum';
-import { RoleCreationAttr } from 'src/role/interfaces/role.interface';
-import { UserRolesModel } from 'src/user/user-roles.model';
-import { UserModel } from 'src/user/user.model';
+import { RoleEnum } from 'src/core/enum/role.enum';
+import { RoleCreationAttr } from 'src/core/interfaces/role.interface';
+import { UserRolesModel } from 'src/modules/user/user-roles.model';
+import { UserModel } from 'src/models/user.model';
 
 @Table({ tableName: 'roles' })
 export class RoleModel extends Model<RoleModel, RoleCreationAttr> {
@@ -19,7 +19,8 @@ export class RoleModel extends Model<RoleModel, RoleCreationAttr> {
   public id: number;
 
   @ApiProperty({ enum: RoleEnum, example: RoleEnum.User, description: 'role', required: true })
-  @Column({ type: DataType.ENUM,
+  @Column({
+    type: DataType.ENUM,
     values: Object.values(RoleEnum),
     allowNull: false,
     unique: true,
@@ -31,5 +32,5 @@ export class RoleModel extends Model<RoleModel, RoleCreationAttr> {
   public description: string;
 
   @BelongsToMany(() => UserModel, () => UserRolesModel)
-  public users: UserModel[]
+  public users: UserModel[];
 }

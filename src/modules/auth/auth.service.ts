@@ -4,12 +4,12 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
-import { UserAuthDto } from 'src/auth/dto/user-auth.dto';
-import { AuthException } from 'src/exceptions/auth.exception';
-import { UserDto } from 'src/user/dto/user.dto';
-import { UserModel } from 'src/user/user.model';
-import { UserService } from 'src/user/user.service';
+import { AuthResponseDto } from 'src/modules/auth/dto/auth-response.dto';
+import { UserAuthDto } from 'src/modules/auth/dto/user-auth.dto';
+import { AuthException } from 'src/core/exceptions/auth.exception';
+import { UserDto } from 'src/modules/user/dto/user.dto';
+import { UserModel } from 'src/models/user.model';
+import { UserService } from 'src/modules/user/user.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()

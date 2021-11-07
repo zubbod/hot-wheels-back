@@ -11,10 +11,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthService } from 'src/auth/auth.service';
-import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
-import { UserDto } from 'src/user/dto/user.dto';
-import { UserAuthDto } from './dto/user-auth.dto';
+import { AuthService } from 'src/modules/auth/auth.service';
+import { AuthResponseDto } from 'src/modules/auth/dto/auth-response.dto';
+import { UserDto } from 'src/modules/user/dto/user.dto';
+import { UserAuthDto } from 'src/modules/auth/dto/user-auth.dto';
 
 @ApiTags('Authorization Controller')
 @Controller('auth')

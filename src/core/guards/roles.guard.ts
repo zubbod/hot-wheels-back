@@ -6,8 +6,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
-import { RoleEnum } from 'src/role/enum/role.enum';
-import { UserModel } from 'src/user/user.model';
+import { RoleEnum } from 'src/core/enum/role.enum';
+import { UserModel } from 'src/models/user.model';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

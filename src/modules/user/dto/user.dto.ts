@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserCreationAttr } from 'src/user/interfaces/user.interface';
+import { UserCreationAttr } from 'src/core/interfaces/user.interface';
 
 export class UserDto implements UserCreationAttr {
   @ApiProperty({ example: 'example@mail.com', description: 'email', required: true })

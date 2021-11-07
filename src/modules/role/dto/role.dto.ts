@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RoleCreationAttr } from 'src/role/interfaces/role.interface';
+import { RoleCreationAttr } from 'src/core/interfaces/role.interface';
 
 export class RoleDto implements RoleCreationAttr {
   @ApiProperty({ example: 'USER', description: 'role', required: true })
