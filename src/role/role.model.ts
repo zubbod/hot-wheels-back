@@ -24,7 +24,7 @@ export class RoleModel extends Model<RoleModel, RoleCreationAttr> {
     allowNull: false,
     unique: true,
   })
-  public value: number;
+  public value: RoleEnum;
 
   @ApiProperty({ example: 'simple user role', description: 'role description', required: true })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })

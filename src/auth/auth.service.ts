@@ -2,11 +2,11 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
 import { UserAuthDto } from 'src/auth/dto/user-auth.dto';
+import { AuthException } from 'src/exceptions/auth.exception';
 import { UserDto } from 'src/user/dto/user.dto';
 import { UserModel } from 'src/user/user.model';
 import { UserService } from 'src/user/user.service';
@@ -52,6 +52,6 @@ export class AuthService {
     if (user && isEqualPasswords) {
       return user;
     }
-    throw new UnauthorizedException({ message: 'Invalid password or email', status: HttpStatus.UNAUTHORIZED });
+    throw new AuthException();
   }
 }

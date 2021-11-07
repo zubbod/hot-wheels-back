@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { RoleEnum } from 'src/role/enum/role.enum';
+import { RoleModel } from 'src/role/role.model';
 import { RoleService } from 'src/role/role.service';
 import { UserDto } from 'src/user/dto/user.dto';
 import { UserModel } from 'src/user/user.model';
@@ -23,12 +24,12 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<Array<UserModel>> {
-    const users = await this.userModel.findAll({ include: { all: true } });
+    const users = await this.userModel.findAll({ include: RoleModel });
     return users;
   }
 
   public async getUserByEmail(email: string): Promise<UserModel | undefined> {
-    const user = this.userModel.findOne({ where: { email }, include: { all: true } });
+    const user = this.userModel.findOne({ where: { email }, include: RoleModel });
     return user;
   }
 }
