@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { CarModel } from 'src/models/car.model';
 import { RoleModel } from 'src/models/role.model';
+import { CarModule } from 'src/modules/car/car.module';
 import { UserRolesModel } from 'src/modules/user/user-roles.model';
 import { UserModel } from 'src/models/user.model';
 import { UserModule } from './modules/user/user.module';
@@ -24,12 +26,14 @@ import { AuthModule } from './modules/auth/auth.module';
         UserModel,
         RoleModel,
         UserRolesModel,
+        CarModel,
       ],
       autoLoadModels: true,
     }),
     UserModule,
     RoleModule,
     AuthModule,
+    CarModule,
   ],
   controllers: [],
   providers: [],

@@ -6,6 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { AuthException } from 'src/core/exceptions/auth.exception';
+import { Auth } from 'src/core/utils/auth';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -19,8 +20,8 @@ export class AuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     try {
       const authHeader = req.headers.authorization;
-      const bearer = authHeader.split(' ')[0];
-      const token = authHeader.split(' ')[1];
+      const bearer = Auth.bearer(authHeader);
+      const token = Auth.token(authHeader);
 
       if (bearer !== 'Bearer' || !token) {
         throw new AuthException();

@@ -45,7 +45,7 @@ export class AuthService {
     };
   }
 
-  private async validateUser(userDto: Partial<UserDto>): Promise<UserModel> {
+  public async validateUser(userDto: Partial<UserDto>): Promise<UserModel> {
     const user = await this.userService.getUserByEmail(userDto.email);
     const isEqualPasswords = await bcrypt.compare(userDto?.password, user.password);
 

@@ -6,5 +6,8 @@ export interface CarCreationAttr {
   carId: string;
   produceYear: string;
   type: CarTypeEmun;
+}
+
+export interface CarCreationAttrWithUserId extends CarCreationAttr {
   userId: number;
 }

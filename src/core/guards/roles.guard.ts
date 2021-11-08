@@ -22,7 +22,6 @@ export class RolesGuard implements CanActivate {
   }
 
   public canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    console.log('roles guard works');
     this.roles = this.reflector.get<RoleEnum[]>('roles', context.getHandler());
     const request = context.switchToHttp().getRequest();
     const jwtToken = request.headers.authorization.split(' ')[1];
