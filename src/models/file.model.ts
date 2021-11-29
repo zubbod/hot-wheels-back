@@ -14,9 +14,13 @@ export class FileModel extends Model<FileModel, FileCreationAttr> {
   @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   public id: number;
 
-  @ApiProperty({ example: 'q2345szdfaws4t53w5wef', description: 'email', required: true })
+  @ApiProperty({ example: 'b1c7426c-0748-4f34-99cc-8a6502f3bf8b', description: 'email', required: true })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   public fileId: string;
+
+  @ApiProperty({ example: '.jpg', description: 'file extension', required: true })
+  @Column({ type: DataType.STRING, allowNull: false })
+  public fileExt: string;
 
   @ApiProperty({ example: 'porshe.jpg', description: 'original name of image', required: true })
   @Column({ type: DataType.STRING, allowNull: false })

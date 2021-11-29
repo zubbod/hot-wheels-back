@@ -10,34 +10,30 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFile } from 'src/core/types/file.type';
+import { FileUpload } from 'src/core/utils/file-upload';
 import { FileResponseDto } from 'src/modules/file-upload/dto/file-response.dto';
 import { FileUploadService } from 'src/modules/file-upload/file-upload.service';
 
 @Controller('file')
 export class FileUploadController {
-
-  constructor(
-    private fileService: FileUploadService,
-  ) {
-  }
+  constructor(private fileService: FileUploadService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  public async upload(@UploadedFile() file: MulterFile): Promise<FileResponseDto> {
-    return await this.fileService.createFile(file);
+  @UseInterceptors(FileInterceptor('file', { storage: FileUpload.storage }))
+  public async upload(
+    @UploadedFile() file: MulterFile,
+  ): Promise<FileResponseDto> {
+    return await this.fileService.upload(file);
   }
 
   @Delete('delete/:id')
-  public delete(@Param('id') id: string) {
-    console.log(id);
+  public async delete(@Param('id') id: string) {
+    return await this.fileService.delete(id);
   }
 
   @Patch('replace/:id')
   @UseInterceptors(FileInterceptor('file'))
-  public replace(
-    @UploadedFile() file: MulterFile,
-    @Param('id') id: string,
-  ) {
+  public replace(@UploadedFile() file: MulterFile, @Param('id') id: string) {
     console.log(file, id);
   }
 
