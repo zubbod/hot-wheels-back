@@ -8,15 +8,24 @@ export class FileUpload {
   public static destination = './upload';
 
   public static createFileResponseDto(file: MulterFile): FileResponseDto {
-    const fileId = file.filename.split('.')[0];
     const fileExt = extname(file.originalname);
     return {
-      fileId,
       fileExt,
       originalName: file.originalname,
       fileSize: file.size,
     } as FileResponseDto;
   }
+
+  //   public static createFileResponseDto(file: MulterFile): FileResponseDto {
+  //   const fileId = file.filename.split('.')[0];
+  //   const fileExt = extname(file.originalname);
+  //   return {
+  //     fileId,
+  //     fileExt,
+  //     originalName: file.originalname,
+  //     fileSize: file.size,
+  //   } as FileResponseDto;
+  // }
 
   public static generateFileName(file: MulterFile): string {
     const ext = extname(file.originalname);
