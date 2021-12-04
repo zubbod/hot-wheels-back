@@ -1,22 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { existsSync, mkdir, unlinkSync, writeFile } from 'fs';
-import { join } from 'path';
+import { extname, join } from 'path';
 import { MulterFile } from 'src/core/types/file.type';
-import { FileUpload } from 'src/core/utils/file-upload';
 import { FileModel } from 'src/models/file.model';
 import { FileResponseDto } from 'src/modules/file-upload/dto/file-response.dto';
 import { v4 } from 'uuid';
 
 @Injectable()
 export class FileUploadService {
+
+  private readonly destination = './upload';
+
   constructor(
     @InjectModel(FileModel)
     private fileModel: typeof FileModel,
   ) {}
 
   public async upload(file: MulterFile): Promise<FileResponseDto> {
-    const result = FileUpload.createFileResponseDto(file);
+    const result = this.createFileResponseDto(file);
     const fileId = v4();
     const savedFile = await this.fileModel.create({ ...result, fileId });
     this.saveFileToStorage(file, savedFile);
@@ -32,8 +34,8 @@ export class FileUploadService {
       this.throwExceptionIfFileNotExist(fileId);
     }
     this.deleteFileFromStorage(fileWhichNeedUpdate);
-    const newFile = FileUpload.createFileResponseDto(file);
-    await fileWhichNeedUpdate.update({...newFile});
+    const newFile = this.createFileResponseDto(file);
+    await fileWhichNeedUpdate.update({ ...newFile });
     await fileWhichNeedUpdate.save();
     this.saveFileToStorage(file, fileWhichNeedUpdate);
     return fileWhichNeedUpdate;
@@ -46,6 +48,14 @@ export class FileUploadService {
       this.throwExceptionIfFileNotExist(fileId);
     }
     return this.deleteFileFromStorage(file);
+  }
+
+  public async getById(fileId: string): Promise<FileResponseDto> {
+    const file = await this.findFileByFileId(fileId);
+    if (!file) {
+      this.throwExceptionIfFileNotExist(fileId);
+    }
+    return file;
   }
 
   private async findFileByFileId(fileId: string): Promise<FileModel> {
@@ -83,7 +93,7 @@ export class FileUploadService {
   }
 
   private getPathToFilesFolder(): string {
-    return join(process.cwd(), FileUpload.destination);
+    return join(process.cwd(), this.destination);
   }
 
   private createFolderIfNecessary(pathToFolder: string): void {
@@ -94,5 +104,14 @@ export class FileUploadService {
 
   private errorCallback(err: NodeJS.ErrnoException): void {
     if (err) throw new HttpException(err.message, HttpStatus.FORBIDDEN);
+  }
+
+  private createFileResponseDto(file: MulterFile): FileResponseDto {
+    const fileExt = extname(file.originalname);
+    return {
+      fileExt,
+      originalName: file.originalname,
+      fileSize: file.size,
+    } as FileResponseDto;
   }
 }

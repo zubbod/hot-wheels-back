@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { FileModel } from 'src/models/file.model';
 import { FileUploadService } from './file-upload.service';
 import { FileUploadController } from './file-upload.controller';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   providers: [FileUploadService],
@@ -13,6 +14,7 @@ import { FileUploadController } from './file-upload.controller';
     SequelizeModule.forFeature([
       FileModel,
     ]),
+    AuthModule,
   ],
 })
 export class FileUploadModule {}
