@@ -1,13 +1,13 @@
 import {
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
-  Scope,
+  Scope
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
+import { BehaviorSubject } from 'rxjs';
 import { PaginatorOptionsInterface } from 'src/core/interfaces/paginator-options.interface';
-import { Auth } from 'src/core/utils/auth';
 import { CarModel } from 'src/models/car.model';
 import { UserModel } from 'src/models/user.model';
 import { CarDto } from 'src/modules/car/dto/car.dto';
@@ -17,9 +17,9 @@ import { CarsResponseDto } from 'src/modules/car/dto/cars-response.dto';
 export class CarService {
   constructor(
     @InjectModel(CarModel) private carModel: typeof CarModel,
-    private jwtService: JwtService,
-  ) {
-  }
+    @Inject('USER')
+    private user: BehaviorSubject<UserModel>,
+  ) {}
 
   public async createCar(dto: CarDto): Promise<CarModel> {
     return await this.carModel.create(dto);
@@ -29,29 +29,50 @@ export class CarService {
     const car = await this.getCarById(id);
 
     if (!car) {
-      throw new HttpException(`Could not find car with id ${ id }`, HttpStatus.BAD_REQUEST);
+      this.throwExceptionIfCarNotFound(id);
     } else {
-      await this.carModel.destroy({ where: { id } });
+      await this.carModel.destroy({ where: { id, userId: this.getUserId() } });
     }
     return car;
   }
 
   public async getCarById(id: number): Promise<CarModel> {
-    return await this.carModel.findOne({ where: { id } });
+    return await this.carModel.findOne({
+      where: { id, userId: this.getUserId() },
+    });
   }
 
-  public async paginate(authHeader: string, options: PaginatorOptionsInterface): Promise<CarsResponseDto> {
-    const userId = this.getUserId(authHeader);
+  public async paginate(
+    options: PaginatorOptionsInterface,
+  ): Promise<CarsResponseDto> {
     const limit = options.limit;
     const offset = options.offset;
-    const result = await this.carModel.findAndCountAll({ where: { userId }, limit, offset });
+    const result = await this.carModel.findAndCountAll({
+      where: { userId: this.getUserId() },
+      limit,
+      offset,
+    });
     return new CarsResponseDto(result.rows, result.count);
   }
 
-  private getUserId(authHeader: string): number {
-    const token = Auth.token(authHeader);
-    const user: UserModel = this.jwtService.verify(token);
-    return Number(user.id);
+  public async updateCar(id: number, newCar: CarDto): Promise<CarModel> {
+    const oldCar = await this.getCarById(id);
+    if (!oldCar) {
+      this.throwExceptionIfCarNotFound(id);
+    }
+    await oldCar.update({ ...newCar });
+    return await oldCar.save();
   }
 
+  private throwExceptionIfCarNotFound(carId: number): void {
+    throw new HttpException(
+      `Could not find car with id ${carId}`,
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  private getUserId(): number {
+    const userId = this.user.value?.getDataValue('id');
+    return userId || -1;
+  }
 }

@@ -1,6 +1,7 @@
 import {
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -11,6 +12,7 @@ import { UserDto } from 'src/modules/user/dto/user.dto';
 import { UserModel } from 'src/models/user.model';
 import { UserService } from 'src/modules/user/user.service';
 import * as bcrypt from 'bcryptjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -18,11 +20,14 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    @Inject('USER')
+    private user: BehaviorSubject<UserModel>,
   ) {
   }
 
   public async login(userDto: UserAuthDto): Promise<AuthResponseDto> {
     const user = await this.validateUser(userDto);
+    this.user.next(user);
     return this.generateToken(user);
   }
 

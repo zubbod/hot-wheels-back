@@ -8,6 +8,7 @@ import {
   UseGuards,
   Headers,
   Query,
+  Patch,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -29,11 +30,7 @@ import { CarsResponseDto } from 'src/modules/car/dto/cars-response.dto';
 @ApiTags('Car Controller')
 @Controller('car')
 export class CarController {
-
-  constructor(
-    private carService: CarService,
-  ) {
-  }
+  constructor(private carService: CarService) {}
 
   @ApiOperation({ summary: 'Create car' })
   @ApiResponse({ status: 201, type: CarModel })
@@ -47,7 +44,6 @@ export class CarController {
 
   @ApiOperation({ summary: 'Delete car' })
   @ApiResponse({ status: 200, type: CarModel })
-  @ApiParam({ name: 'car id', example: '1', required: true })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Delete('delete/:id')
@@ -55,9 +51,21 @@ export class CarController {
     return await this.carService.deleteCar(id);
   }
 
+  @ApiOperation({ summary: 'Patch car' })
+  @ApiResponse({ status: 200, type: CarModel })
+  @ApiBody({ type: CarDto })
+  @Roles(RoleEnum.User, RoleEnum.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Patch('update/:id')
+  public async updateCar(
+    @Param('id') id: number,
+    @Body() dto: CarDto,
+  ): Promise<CarModel> {
+    return await this.carService.updateCar(id, dto);
+  }
+
   @ApiOperation({ summary: 'Get car by carId' })
   @ApiResponse({ status: 200, type: CarModel })
-  @ApiParam({ name: 'car id', example: 'GRT54', required: true })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Get()
@@ -67,17 +75,26 @@ export class CarController {
 
   @ApiOperation({ summary: 'Get all cars' })
   @ApiResponse({ status: 200, type: CarsResponseDto })
-  @ApiQuery({name: 'limit', type: Number, example: '10', description: 'limit rows'})
-  @ApiQuery({name: 'offset', type: Number, example: '10', description: 'skip rows'})
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    example: '10',
+    description: 'limit rows',
+  })
+  @ApiQuery({
+    name: 'offset',
+    type: Number,
+    example: '10',
+    description: 'skip rows',
+  })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Get('all')
   public async paginate(
-    @Headers('authorization') auth: string,
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ): Promise<CarsResponseDto> {
-    return await this.carService.paginate(auth, {
+    return await this.carService.paginate({
       limit: Number(limit),
       offset: Number(offset),
     });
