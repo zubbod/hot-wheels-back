@@ -3,20 +3,40 @@ import { CarTypeEmun } from 'src/core/enum/car-type.emun';
 import { CarCreationAttr } from 'src/core/interfaces/car.interface';
 
 export class CarDto implements CarCreationAttr {
-  @ApiProperty({ name: 'Car id', type: String, example: 'GFD54', required: true })
+  @ApiProperty({
+    name: 'carId',
+    type: String,
+    example: 'GFD54',
+    required: true,
+  })
   public carId: string;
 
-  @ApiProperty({ name: 'Car manufacturer', type: String, example: 'Mercedes-Benz', required: false })
+  @ApiProperty({
+    name: 'manufacturer',
+    type: String,
+    example: 'Mercedes-Benz',
+    required: false,
+  })
   public manufacturer: string;
 
-  @ApiProperty({ name: 'Car model', type: String, example: 'AMG G63', required: false })
+  @ApiProperty({
+    name: 'model',
+    type: String,
+    example: 'AMG G63',
+    required: false,
+  })
   public model: string;
 
-  @ApiProperty({ name: 'Year of produce', type: String, example: '2012', required: false })
+  @ApiProperty({
+    name: 'produceYear',
+    type: String,
+    example: '2012',
+    required: false,
+  })
   public produceYear: string;
 
   @ApiProperty({
-    name: 'Car type',
+    name: 'type',
     type: CarTypeEmun,
     enum: CarTypeEmun,
     required: true,
@@ -24,6 +44,6 @@ export class CarDto implements CarCreationAttr {
   })
   public type: CarTypeEmun;
 
-  @ApiProperty({ name: 'User id', type: Number, example: '1', required: true })
+  @ApiProperty({ name: 'userId', type: Number, example: '1', required: true })
   public userId: number;
 }

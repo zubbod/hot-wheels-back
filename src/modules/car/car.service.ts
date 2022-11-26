@@ -3,7 +3,7 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  Scope
+  Scope,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BehaviorSubject } from 'rxjs';
@@ -12,13 +12,14 @@ import { CarModel } from 'src/models/car.model';
 import { UserModel } from 'src/models/user.model';
 import { CarDto } from 'src/modules/car/dto/car.dto';
 import { CarsResponseDto } from 'src/modules/car/dto/cars-response.dto';
+import { USER } from '../../core/token/user.token';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CarService {
   constructor(
     @InjectModel(CarModel) private carModel: typeof CarModel,
-    @Inject('USER')
-    private user: BehaviorSubject<UserModel>,
+    @Inject(USER)
+    private user: BehaviorSubject<UserModel>
   ) {}
 
   public async createCar(dto: CarDto): Promise<CarModel> {
@@ -43,10 +44,11 @@ export class CarService {
   }
 
   public async paginate(
-    options: PaginatorOptionsInterface,
+    options: PaginatorOptionsInterface
   ): Promise<CarsResponseDto> {
     const limit = options.limit;
     const offset = options.offset;
+    console.log(this.getUserId());
     const result = await this.carModel.findAndCountAll({
       where: { userId: this.getUserId() },
       limit,
@@ -67,7 +69,7 @@ export class CarService {
   private throwExceptionIfCarNotFound(carId: number): void {
     throw new HttpException(
       `Could not find car with id ${carId}`,
-      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
     );
   }
 

@@ -13,10 +13,10 @@ import { USER, userProvider } from 'src/core/token/user.token';
     JwtModule.register({
       secret: process.env.PRIVATE_KEY || 'SECRET_KEY',
       signOptions: {
-        expiresIn: '24h',
+        expiresIn: 60 * 1000 * 60 * 24,
       },
     }),
   ],
-  exports: [AuthService, JwtModule, USER,],
+  exports: [AuthService, JwtModule, USER],
 })
 export class AuthModule {}

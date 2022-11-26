@@ -14,34 +14,21 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
 import { UserModule } from './modules/user/user.module';
 
-// export const SEQUELIZE_CONF = {
-//   dialect: 'postgres' as Dialect,
-//   host: process.env.POSTGRES_HOST,
-//   port: Number(process.env.POSTGRES_PORT),
-//   username: process.env.POSTGRES_USER,
-//   password: process.env.POSTGRES_PASSWORD,
-//   database: process.env.POSTGRES_DATABASE,
-//   models: [UserModel, RoleModel, UserRolesModel, CarModel],
-//   autoLoadModels: true,
-// };
-
-export const SEQUELIZE_CONF = {
-  dialect: 'postgres' as Dialect,
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: '1902',
-  database: 'postgres',
-  models: [UserModel, RoleModel, UserRolesModel, CarModel],
-  autoLoadModels: true,
-};
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
-    SequelizeModule.forRoot(SEQUELIZE_CONF),
+    SequelizeModule.forRoot({
+      dialect: 'postgres' as Dialect,
+      username: process.env.DB_USER,
+      host: process.env.DB_HOST,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      port: Number(process.env.DB_PORT),
+      models: [UserModel, RoleModel, UserRolesModel, CarModel],
+      autoLoadModels: true,
+    }),
     UserModule,
     RoleModule,
     AuthModule,
@@ -58,8 +45,4 @@ export const SEQUELIZE_CONF = {
   controllers: [],
   providers: [],
 })
-export class AppModule {
-  constructor() {
-    console.log(SEQUELIZE_CONF);
-  }
-}
+export class AppModule {}

@@ -9,13 +9,14 @@ import { UserService } from 'src/modules/user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { BehaviorSubject } from 'rxjs';
 import { UserNotExistException } from 'src/core/exceptions/user.exception';
+import { USER } from '../../core/token/user.token';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    @Inject('USER')
+    @Inject(USER)
     private user: BehaviorSubject<UserModel>
   ) {}
 

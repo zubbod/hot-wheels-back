@@ -1,8 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { AuthException } from 'src/core/exceptions/auth.exception';
@@ -10,13 +6,11 @@ import { Auth } from 'src/core/utils/auth';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  public constructor(private jwtService: JwtService) {}
 
-  public constructor(
-    private jwtService: JwtService,
-  ) {
-  }
-
-  public canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  public canActivate(
+    context: ExecutionContext
+  ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest();
     try {
       const authHeader = req.headers.authorization;
@@ -27,12 +21,11 @@ export class AuthGuard implements CanActivate {
         throw new AuthException();
       }
 
-      const user = this.jwtService.verify(token);
+      const user = this.jwtService.verify(token, { ignoreExpiration: false });
       req.user = user;
       return true;
     } catch (e) {
       throw new AuthException();
     }
   }
-
 }
