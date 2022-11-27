@@ -8,11 +8,14 @@ services:
       - db
     volumes:
       - .:/app
+      - images_data:/app/upload
+    restart: always
 
   db:
     image: postgres
+    restart: always
     volumes:
-      - data:/data/db
+      - ../../dbs/hot_wheels_db:/var/lib/postgresql
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
@@ -22,5 +25,7 @@ services:
     restart: always
     ports:
       - 8887:8080
+
 volumes:
-  data: {}
+  pg_data:
+  images_data:

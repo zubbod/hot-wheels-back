@@ -44,7 +44,7 @@ export class AuthService {
   private generateToken(user: UserModel): AuthResponseDto {
     const payload = { email: user.email, id: user.id, roles: user.roles };
     return {
-      token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload, { expiresIn: '1h' }),
     };
   }
 
