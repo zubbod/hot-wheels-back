@@ -1,11 +1,11 @@
-import { CarTypeEmun } from 'src/core/enum/car-type.emun';
+import { CarTypeModel } from 'src/modules/car-type/entities/car-type.entity';
 
 export interface CarCreationAttr {
   manufacturer: string;
   model: string;
   carId: string;
   produceYear: string;
-  type: CarTypeEmun;
+  type: CarTypeModel;
 }
 
 export interface CarCreationAttrWithUserId extends CarCreationAttr {

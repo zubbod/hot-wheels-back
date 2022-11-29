@@ -13,12 +13,21 @@ import { UserModel } from 'src/models/user.model';
 
 @Table({ tableName: 'roles' })
 export class RoleModel extends Model<RoleModel, RoleCreationAttr> {
-
   @ApiProperty({ example: '1', description: 'role id', required: true })
-  @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+  })
   public id: number;
 
-  @ApiProperty({ enum: RoleEnum, example: RoleEnum.User, description: 'role', required: true })
+  @ApiProperty({
+    enum: RoleEnum,
+    example: RoleEnum.User,
+    description: 'role',
+    required: true,
+  })
   @Column({
     type: DataType.ENUM,
     values: Object.values(RoleEnum),
@@ -27,7 +36,11 @@ export class RoleModel extends Model<RoleModel, RoleCreationAttr> {
   })
   public value: RoleEnum;
 
-  @ApiProperty({ example: 'simple user role', description: 'role description', required: true })
+  @ApiProperty({
+    example: 'simple user role',
+    description: 'role description',
+    required: true,
+  })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   public description: string;
 

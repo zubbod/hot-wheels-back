@@ -13,6 +13,8 @@ import { UserRolesModel } from 'src/modules/user/user-roles.model';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
 import { UserModule } from './modules/user/user.module';
+import { CarTypeModule } from './modules/car-type/car-type.module';
+import { CarTypeModel } from './modules/car-type/entities/car-type.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,7 @@ import { UserModule } from './modules/user/user.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       port: Number(process.env.DB_PORT),
-      models: [UserModel, RoleModel, UserRolesModel, CarModel],
+      models: [UserModel, RoleModel, UserRolesModel, CarModel, CarTypeModel],
       autoLoadModels: true,
     }),
     UserModule,
@@ -34,6 +36,7 @@ import { UserModule } from './modules/user/user.module';
     AuthModule,
     CarModule,
     FileUploadModule,
+    CarTypeModule,
     ServeStaticModule.forRoot({
       rootPath: resolve(__dirname, '..', 'upload'),
       exclude: ['/api'],
@@ -41,6 +44,7 @@ import { UserModule } from './modules/user/user.module';
         index: false,
       },
     }),
+    CarTypeModule,
   ],
   controllers: [],
   providers: [],

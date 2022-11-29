@@ -7,12 +7,14 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BehaviorSubject } from 'rxjs';
+import { AuthException } from 'src/core/exceptions/auth.exception';
 import { PaginatorOptionsInterface } from 'src/core/interfaces/paginator-options.interface';
 import { CarModel } from 'src/models/car.model';
 import { UserModel } from 'src/models/user.model';
 import { CarDto } from 'src/modules/car/dto/car.dto';
 import { CarsResponseDto } from 'src/modules/car/dto/cars-response.dto';
 import { USER } from '../../core/token/user.token';
+import { CarTypeModel } from '../car-type/entities/car-type.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CarService {
@@ -48,9 +50,9 @@ export class CarService {
   ): Promise<CarsResponseDto> {
     const limit = options.limit;
     const offset = options.offset;
-    console.log(this.getUserId());
     const result = await this.carModel.findAndCountAll({
       where: { userId: this.getUserId() },
+      include: [CarTypeModel],
       limit,
       offset,
     });
@@ -75,6 +77,11 @@ export class CarService {
 
   private getUserId(): number {
     const userId = this.user.value?.getDataValue('id');
-    return userId || -1;
+    if (!userId)
+      throw new AuthException({
+        status: HttpStatus.UNAUTHORIZED,
+        message: 'User unauthorized or not exist',
+      });
+    return userId;
   }
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CarTypeEmun } from 'src/core/enum/car-type.emun';
 import { CarCreationAttr } from 'src/core/interfaces/car.interface';
+import { CarTypeModel } from 'src/modules/car-type/entities/car-type.entity';
 
 export class CarDto implements CarCreationAttr {
   @ApiProperty({
@@ -37,12 +37,10 @@ export class CarDto implements CarCreationAttr {
 
   @ApiProperty({
     name: 'type',
-    type: CarTypeEmun,
-    enum: CarTypeEmun,
+    type: CarTypeModel,
     required: true,
-    examples: Object.values(CarTypeEmun),
   })
-  public type: CarTypeEmun;
+  public type: CarTypeModel;
 
   @ApiProperty({ name: 'userId', type: Number, example: '1', required: true })
   public userId: number;

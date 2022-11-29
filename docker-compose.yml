@@ -2,8 +2,10 @@ version: '3.8'
 services:
   api:
     build: .
+    env_file:
+      - ./dev.env
     ports:
-      - ${PORT}:${PORT}
+      - 4300:4300
     depends_on:
       - db
     volumes:
@@ -13,12 +15,11 @@ services:
 
   db:
     image: postgres
+    env_file:
+      - ./dev.env
     restart: always
     volumes:
-      - ../../dbs/hot_wheels_db:/var/lib/postgresql
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      - ./../../dbs/hw_db/data:/var/lib/postgresql/data
 
   adminer:
     image: adminer

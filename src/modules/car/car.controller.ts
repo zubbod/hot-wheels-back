@@ -4,16 +4,14 @@ import {
   Delete,
   Get,
   Param,
-  Post,
-  UseGuards,
-  Headers,
-  Query,
   Patch,
+  Post,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBody,
   ApiOperation,
-  ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
@@ -59,7 +57,7 @@ export class CarController {
   @Patch('update/:id')
   public async updateCar(
     @Param('id') id: number,
-    @Body() dto: CarDto,
+    @Body() dto: CarDto
   ): Promise<CarModel> {
     return await this.carService.updateCar(id, dto);
   }
@@ -92,7 +90,7 @@ export class CarController {
   @Get('all')
   public async paginate(
     @Query('limit') limit: number,
-    @Query('offset') offset: number,
+    @Query('offset') offset: number
   ): Promise<CarsResponseDto> {
     return await this.carService.paginate({
       limit: Number(limit),
