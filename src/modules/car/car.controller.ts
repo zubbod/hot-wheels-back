@@ -35,7 +35,7 @@ export class CarController {
   @ApiBody({ type: CarDto })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Post('create')
+  @Post()
   public async createCar(@Body() dto: CarDto): Promise<CarModel> {
     return await this.carService.createCar(dto);
   }
@@ -44,7 +44,7 @@ export class CarController {
   @ApiResponse({ status: 200, type: CarModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Delete('delete/:id')
+  @Delete(':id')
   public async deleteCar(@Param('id') id: number): Promise<CarModel> {
     return await this.carService.deleteCar(id);
   }
@@ -54,7 +54,7 @@ export class CarController {
   @ApiBody({ type: CarDto })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Patch('update/:id')
+  @Patch(':id')
   public async updateCar(
     @Param('id') id: number,
     @Body() dto: CarDto
@@ -66,8 +66,8 @@ export class CarController {
   @ApiResponse({ status: 200, type: CarModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Get()
-  public async getCarById(@Query('id') id: number): Promise<CarModel> {
+  @Get(':id')
+  public async getCarById(@Param('id') id: number): Promise<CarModel> {
     return await this.carService.getCarById(id);
   }
 
@@ -87,7 +87,7 @@ export class CarController {
   })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Get('all')
+  @Get()
   public async paginate(
     @Query('limit') limit: number,
     @Query('offset') offset: number

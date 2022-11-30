@@ -14,19 +14,24 @@ export class CarTypeService {
     return await this.carTypeModel.create(createCarTypeDto);
   }
 
-  findAll() {
-    return `This action returns all carType`;
+  async findAll() {
+    return await this.carTypeModel.findAndCountAll({
+      attributes: ['id', 'name'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} carType`;
+  async findOne(id: number) {
+    return await this.carTypeModel.findOne({
+      where: { id },
+      attributes: ['id', 'name'],
+    });
   }
 
-  update(id: number, updateCarTypeDto: UpdateCarTypeDto) {
+  async update(id: number, updateCarTypeDto: UpdateCarTypeDto) {
     return `This action updates a #${id} carType`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} carType`;
   }
 }

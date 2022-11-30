@@ -4,12 +4,12 @@ import { CarTypeModel } from 'src/modules/car-type/entities/car-type.entity';
 
 export class CarDto implements CarCreationAttr {
   @ApiProperty({
-    name: 'carId',
+    name: 'code',
     type: String,
     example: 'GFD54',
     required: true,
   })
-  public carId: string;
+  public code: string;
 
   @ApiProperty({
     name: 'manufacturer',

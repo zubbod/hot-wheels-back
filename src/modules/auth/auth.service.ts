@@ -23,7 +23,7 @@ export class AuthService {
   public async login(userDto: UserAuthDto): Promise<AuthResponseDto> {
     const user = await this.validateUser(userDto);
     this.user.next(user);
-    return this.generateToken(user);
+    return this.generateToken(user.id);
   }
 
   public async registration(userDto: UserDto): Promise<AuthResponseDto> {
@@ -37,14 +37,16 @@ export class AuthService {
     } else {
       const password = await bcrypt.hash(userDto.password, 5);
       const user = await this.userService.createUser({ ...userDto, password });
-      return this.generateToken(user);
+      return this.generateToken(user.getDataValue('id'));
     }
   }
 
-  private generateToken(user: UserModel): AuthResponseDto {
+  private async generateToken(id: number): Promise<AuthResponseDto> {
+    const user = await this.userService.getUserById(id);
     const payload = { email: user.email, id: user.id, roles: user.roles };
     return {
       token: this.jwtService.sign(payload, { expiresIn: '1h' }),
+      user: user,
     };
   }
 

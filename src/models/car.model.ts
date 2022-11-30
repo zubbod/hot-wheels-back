@@ -34,9 +34,9 @@ export class CarModel extends Model<CarModel, CarCreationAttr> {
   @Column(DataType.STRING)
   public produceYear: string;
 
-  @ApiProperty({ example: 'GFX53', description: 'car id', required: true })
+  @ApiProperty({ example: 'GFX53', description: 'car code', required: true })
   @Column(DataType.STRING)
-  public carId: string;
+  public code: string;
 
   @ApiProperty({ example: '1', description: 'user id', required: true })
   @Column(DataType.INTEGER)
