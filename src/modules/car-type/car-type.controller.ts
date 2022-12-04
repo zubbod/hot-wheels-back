@@ -17,7 +17,7 @@ import { CreateCarTypeDto } from './dto/create-car-type.dto';
 import { UpdateCarTypeDto } from './dto/update-car-type.dto';
 import { CarTypeModel } from './entities/car-type.entity';
 
-@Controller('car-type')
+@Controller('cartype')
 export class CarTypeController {
   constructor(private readonly carTypeService: CarTypeService) {}
 

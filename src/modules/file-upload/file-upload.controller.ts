@@ -2,6 +2,7 @@ import {
   Controller,
   Delete,
   Get,
+  Put,
   Param,
   Post,
   UploadedFile,
@@ -9,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/core/decorators/roles.decorator';
 import { RoleEnum } from 'src/core/enum/role.enum';
 import { AuthGuard } from 'src/core/guards/auth.guard';
@@ -28,10 +29,10 @@ export class FileUploadController {
   @ApiResponse({ status: 201, type: FileModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @Post()
+  @UseInterceptors(FileInterceptor('image'))
   public async upload(
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: MulterFile
   ): Promise<FileResponseDto> {
     return await this.fileService.upload(file);
   }
@@ -40,12 +41,7 @@ export class FileUploadController {
   @ApiResponse({ status: 200, type: FileModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @ApiParam({
-    name: 'file id',
-    example: 'c42a5282-df86-4071-93f3-494773ab4308',
-    required: true,
-  })
-  @Delete('delete/:id')
+  @Delete(':id')
   public async delete(@Param('id') id: string): Promise<FileResponseDto> {
     return await this.fileService.delete(id);
   }
@@ -54,16 +50,11 @@ export class FileUploadController {
   @ApiResponse({ status: 200, type: FileModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @ApiParam({
-    name: 'file id',
-    example: 'c42a5282-df86-4071-93f3-494773ab4308',
-    required: true,
-  })
-  @Post('replace/:id')
+  @Put(':id')
   @UseInterceptors(FileInterceptor('file'))
   public async replace(
     @UploadedFile() file: MulterFile,
-    @Param('id') id: string,
+    @Param('id') id: string
   ): Promise<FileResponseDto> {
     return await this.fileService.replace(file, id);
   }
@@ -72,12 +63,7 @@ export class FileUploadController {
   @ApiResponse({ status: 200, type: FileModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @ApiParam({
-    name: 'file id',
-    example: 'c42a5282-df86-4071-93f3-494773ab4308',
-    required: true,
-  })
-  @Get('find/:id')
+  @Get(':id')
   public getById(@Param('id') id: string): Promise<FileResponseDto> {
     return this.fileService.getById(id);
   }

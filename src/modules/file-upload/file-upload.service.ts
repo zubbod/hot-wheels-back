@@ -9,12 +9,11 @@ import { v4 } from 'uuid';
 
 @Injectable()
 export class FileUploadService {
-
   private readonly destination = './upload';
 
   constructor(
     @InjectModel(FileModel)
-    private fileModel: typeof FileModel,
+    private fileModel: typeof FileModel
   ) {}
 
   public async upload(file: MulterFile): Promise<FileResponseDto> {
@@ -27,7 +26,7 @@ export class FileUploadService {
 
   public async replace(
     file: MulterFile,
-    fileId: string,
+    fileId: string
   ): Promise<FileResponseDto> {
     const fileWhichNeedUpdate = await this.findFileByFileId(fileId);
     if (!Boolean(fileWhichNeedUpdate)) {
@@ -80,7 +79,7 @@ export class FileUploadService {
   private throwExceptionIfFileNotExist(fileId: string): void {
     throw new HttpException(
       `File with id ${fileId} not found`,
-      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
     );
   }
 
@@ -98,6 +97,7 @@ export class FileUploadService {
 
   private createFolderIfNecessary(pathToFolder: string): void {
     if (!existsSync(pathToFolder)) {
+      console.log(pathToFolder);
       mkdir(pathToFolder, { recursive: true }, this.errorCallback);
     }
   }

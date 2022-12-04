@@ -10,7 +10,7 @@ services:
       - db
     volumes:
       - .:/app
-      - images_data:/app/upload
+      - ./../../dbs/images_data:/app/upload
     restart: always
 
   db:
