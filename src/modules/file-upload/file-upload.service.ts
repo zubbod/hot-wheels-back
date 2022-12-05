@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { existsSync, mkdir, unlinkSync, writeFile } from 'fs';
 import { extname, join } from 'path';
 import { MulterFile } from 'src/core/types/file.type';
+import { CarModel } from 'src/models/car.model';
 import { FileModel } from 'src/models/file.model';
 import { FileResponseDto } from 'src/modules/file-upload/dto/file-response.dto';
 import { v4 } from 'uuid';
@@ -13,13 +14,22 @@ export class FileUploadService {
 
   constructor(
     @InjectModel(FileModel)
-    private fileModel: typeof FileModel
+    private fileModel: typeof FileModel,
+    @InjectModel(CarModel)
+    private carModel: typeof CarModel
   ) {}
 
-  public async upload(file: MulterFile): Promise<FileResponseDto> {
+  public async upload(
+    file: MulterFile,
+    carId: number
+  ): Promise<FileResponseDto> {
     const result = this.createFileResponseDto(file);
     const fileId = v4();
     const savedFile = await this.fileModel.create({ ...result, fileId });
+    const car = await this.carModel.findOne({ where: { id: carId } });
+    console.log(car);
+
+    await car.update({ fileId: savedFile.id });
     this.saveFileToStorage(file, savedFile);
     return savedFile;
   }

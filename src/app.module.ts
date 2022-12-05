@@ -15,6 +15,7 @@ import { RoleModule } from './modules/role/role.module';
 import { UserModule } from './modules/user/user.module';
 import { CarTypeModule } from './modules/car-type/car-type.module';
 import { CarTypeModel } from './modules/car-type/entities/car-type.entity';
+import { FileModel } from './models/file.model';
 
 @Module({
   imports: [
@@ -28,7 +29,14 @@ import { CarTypeModel } from './modules/car-type/entities/car-type.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       port: Number(process.env.DB_PORT),
-      models: [UserModel, RoleModel, UserRolesModel, CarModel, CarTypeModel],
+      models: [
+        UserModel,
+        RoleModel,
+        UserRolesModel,
+        CarModel,
+        CarTypeModel,
+        FileModel,
+      ],
       autoLoadModels: true,
     }),
     UserModule,

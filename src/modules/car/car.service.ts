@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthException } from 'src/core/exceptions/auth.exception';
 import { PaginatorOptionsInterface } from 'src/core/interfaces/paginator-options.interface';
 import { CarModel } from 'src/models/car.model';
+import { FileModel } from 'src/models/file.model';
 import { UserModel } from 'src/models/user.model';
 import { CarDto } from 'src/modules/car/dto/car.dto';
 import { CarsResponseDto } from 'src/modules/car/dto/cars-response.dto';
@@ -42,6 +43,16 @@ export class CarService {
   public async getCarById(id: number): Promise<CarModel> {
     return await this.carModel.findOne({
       where: { id, userId: this.getUserId() },
+      include: [
+        {
+          model: CarTypeModel,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: FileModel,
+          attributes: ['fileExt', 'fileId', 'id', 'originalName'],
+        },
+      ],
     });
   }
 
@@ -52,7 +63,16 @@ export class CarService {
     const offset = options.offset;
     const result = await this.carModel.findAndCountAll({
       where: { userId: this.getUserId() },
-      include: [CarTypeModel],
+      include: [
+        {
+          model: CarTypeModel,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: FileModel,
+          attributes: ['fileExt', 'fileId', 'id', 'originalName'],
+        },
+      ],
       limit,
       offset,
     });

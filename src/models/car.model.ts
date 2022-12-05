@@ -5,6 +5,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
@@ -12,6 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { CarCreationAttr } from 'src/core/interfaces/car.interface';
 import { CarTypeModel } from 'src/modules/car-type/entities/car-type.entity';
+import { FileModel } from './file.model';
 
 @Table({ tableName: 'cars' })
 export class CarModel extends Model<CarModel, CarCreationAttr> {
@@ -49,6 +51,17 @@ export class CarModel extends Model<CarModel, CarCreationAttr> {
   })
   @Column(DataType.INTEGER)
   typeId: number;
+
+  @ForeignKey(() => FileModel)
+  @ApiProperty({
+    description: 'file id',
+    required: true,
+  })
+  @Column(DataType.INTEGER)
+  fileId: number;
+
+  @BelongsTo(() => FileModel)
+  file: FileModel;
 
   @BelongsTo(() => CarTypeModel)
   type: CarTypeModel;

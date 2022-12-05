@@ -29,12 +29,13 @@ export class FileUploadController {
   @ApiResponse({ status: 201, type: FileModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  @Post()
+  @Post(':id')
   @UseInterceptors(FileInterceptor('image'))
   public async upload(
+    @Param('id') carId: number,
     @UploadedFile() file: MulterFile
   ): Promise<FileResponseDto> {
-    return await this.fileService.upload(file);
+    return await this.fileService.upload(file, carId);
   }
 
   @ApiOperation({ summary: 'Delete file' })
