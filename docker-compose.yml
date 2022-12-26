@@ -27,3 +27,7 @@ services:
     restart: always
     ports:
       - 8887:8080
+
+volumes:
+  pg_data:
+  images_data:
