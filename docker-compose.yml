@@ -3,8 +3,6 @@ version: '3.8'
 services:
   api:
     build: .
-    env_file:
-      - ./dev.env
     ports:
       - 4300:4300
     depends_on:
@@ -16,17 +14,11 @@ services:
 
   db:
     image: postgres
-    env_file:
-      - ./dev.env
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
     restart: always
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_DB=${DB_NAME}
     volumes:
       - ./../../dbs/hw_db/data:/var/lib/postgresql/data
 
