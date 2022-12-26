@@ -18,6 +18,10 @@ services:
     env_file:
       - ./dev.env
     restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - ./../../dbs/hw_db/data:/var/lib/postgresql/data
 

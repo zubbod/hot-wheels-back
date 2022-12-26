@@ -40,6 +40,21 @@ export class CarController {
     return await this.carService.createCar(dto);
   }
 
+  @ApiOperation({ summary: 'Find car by name' })
+  @ApiResponse({ status: 200, type: [CarModel] })
+  @ApiQuery({
+    name: 'query',
+    type: String,
+    example: 'bmw',
+    description: 'car name',
+  })
+  @Roles(RoleEnum.User, RoleEnum.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('search')
+  public async search(@Query('query') name: string): Promise<CarModel[]> {
+    return await this.carService.searchByName(name);
+  }
+
   @ApiOperation({ summary: 'Delete car' })
   @ApiResponse({ status: 200, type: CarModel })
   @Roles(RoleEnum.User, RoleEnum.Admin)

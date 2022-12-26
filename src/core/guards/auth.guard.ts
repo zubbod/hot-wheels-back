@@ -11,6 +11,7 @@ export class AuthGuard implements CanActivate {
   public canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
+    // if (process.env.NODE_ENV === 'dev') return true;
     const req = context.switchToHttp().getRequest();
     try {
       const authHeader = req.headers.authorization;
