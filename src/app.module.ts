@@ -20,7 +20,7 @@ import { FileModel } from './models/file.model';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      envFilePath: `${process.env.NODE_ENV}.env`,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres' as Dialect,

@@ -4,18 +4,19 @@ import {
   Inject,
   Injectable,
   Scope,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { BehaviorSubject } from 'rxjs';
-import { AuthException } from 'src/core/exceptions/auth.exception';
-import { PaginatorOptionsInterface } from 'src/core/interfaces/paginator-options.interface';
-import { CarModel } from 'src/models/car.model';
-import { FileModel } from 'src/models/file.model';
-import { UserModel } from 'src/models/user.model';
-import { CarDto } from 'src/modules/car/dto/car.dto';
-import { CarsResponseDto } from 'src/modules/car/dto/cars-response.dto';
-import { USER } from '../../core/token/user.token';
-import { CarTypeModel } from '../car-type/entities/car-type.entity';
+} from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { BehaviorSubject } from "rxjs";
+import { Op } from "sequelize";
+import { AuthException } from "src/core/exceptions/auth.exception";
+import { PaginatorOptionsInterface } from "src/core/interfaces/paginator-options.interface";
+import { CarModel } from "src/models/car.model";
+import { FileModel } from "src/models/file.model";
+import { UserModel } from "src/models/user.model";
+import { CarDto } from "src/modules/car/dto/car.dto";
+import { CarsResponseDto } from "src/modules/car/dto/cars-response.dto";
+import { USER } from "../../core/token/user.token";
+import { CarTypeModel } from "../car-type/entities/car-type.entity";
 
 @Injectable({ scope: Scope.REQUEST })
 export class CarService {
@@ -46,11 +47,11 @@ export class CarService {
       include: [
         {
           model: CarTypeModel,
-          attributes: ['id', 'name'],
+          attributes: ["id", "name"],
         },
         {
           model: FileModel,
-          attributes: ['fileExt', 'fileId', 'id', 'originalName'],
+          attributes: ["fileExt", "fileId", "id", "originalName"],
         },
       ],
     });
@@ -66,17 +67,40 @@ export class CarService {
       include: [
         {
           model: CarTypeModel,
-          attributes: ['id', 'name'],
+          attributes: ["id", "name"],
         },
         {
           model: FileModel,
-          attributes: ['fileExt', 'fileId', 'id', 'originalName'],
+          attributes: ["fileExt", "fileId", "id", "originalName"],
         },
       ],
       limit,
       offset,
     });
     return new CarsResponseDto(result.rows, result.count);
+  }
+
+  public async searchByName(name: any): Promise<CarModel[]> {
+    const carList = CarModel.findAll({
+      where: {
+        [Op.or]: {
+          manufacturer: { [Op.iLike]: `%${name}%` },
+          model: { [Op.iLike]: `%${name}%` },
+        },
+      },
+      include: [
+        {
+          model: CarTypeModel,
+          attributes: ["id", "name"],
+        },
+        {
+          model: FileModel,
+          attributes: ["fileExt", "fileId", "id", "originalName"],
+        },
+      ],
+    });
+
+    return carList;
   }
 
   public async updateCar(id: number, newCar: CarDto): Promise<CarModel> {
@@ -96,11 +120,11 @@ export class CarService {
   }
 
   private getUserId(): number {
-    const userId = this.user.value?.getDataValue('id');
+    const userId = this.user.value?.getDataValue("id");
     if (!userId)
       throw new AuthException({
         status: HttpStatus.UNAUTHORIZED,
-        message: 'User unauthorized or not exist',
+        message: "User unauthorized or not exist",
       });
     return userId;
   }
