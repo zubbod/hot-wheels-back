@@ -29,14 +29,7 @@ import { FileModel } from './models/file.model';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       port: Number(process.env.DB_PORT),
-      models: [
-        UserModel,
-        RoleModel,
-        UserRolesModel,
-        CarModel,
-        CarTypeModel,
-        FileModel,
-      ],
+      models: [UserModel, RoleModel, UserRolesModel, CarModel, CarTypeModel, FileModel],
       autoLoadModels: true,
     }),
     UserModule,
@@ -57,4 +50,8 @@ import { FileModel } from './models/file.model';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log(process.env);
+  }
+}
