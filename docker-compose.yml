@@ -1,12 +1,7 @@
 version: '3.8'
 services:
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - PROD=${PROD}
-        - TARGET=${TARGET}
+    build: .
     ports:
       - 4300:4300
     depends_on:
