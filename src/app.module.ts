@@ -16,6 +16,7 @@ import { UserModule } from './modules/user/user.module';
 import { CarTypeModule } from './modules/car-type/car-type.module';
 import { CarTypeModel } from './modules/car-type/entities/car-type.entity';
 import { FileModel } from './models/file.model';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { FileModel } from './models/file.model';
     RoleModule,
     AuthModule,
     CarModule,
+    DashboardModule,
     FileUploadModule,
     CarTypeModule,
     ServeStaticModule.forRoot({

@@ -9,13 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/core/decorators/roles.decorator';
 import { RoleEnum } from 'src/core/enum/role.enum';
 import { AuthGuard } from 'src/core/guards/auth.guard';
@@ -70,10 +64,7 @@ export class CarController {
   @Roles(RoleEnum.User, RoleEnum.Admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
-  public async updateCar(
-    @Param('id') id: number,
-    @Body() dto: CarDto
-  ): Promise<CarModel> {
+  public async updateCar(@Param('id') id: number, @Body() dto: CarDto): Promise<CarModel> {
     return await this.carService.updateCar(id, dto);
   }
 
@@ -105,7 +96,7 @@ export class CarController {
   @Get()
   public async paginate(
     @Query('limit') limit: number,
-    @Query('offset') offset: number
+    @Query('offset') offset: number,
   ): Promise<CarsResponseDto> {
     return await this.carService.paginate({
       limit: Number(limit),
