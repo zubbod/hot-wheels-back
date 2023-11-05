@@ -10,6 +10,14 @@ RUN npm install
 
 COPY . ./
 
-RUN npm run build
+ARG PROD=true
 
-CMD ["npm", "run", "start:prod"]
+ARG TARGET=prod
+
+RUN npm run build:${TARGET}
+
+ENV TARGET=${TARGET}
+
+# CMD ["npm", "run", "start:$TARGET"]
+
+CMD [ "sh", "-c", "npm run start:${TARGET}" ]

@@ -13,8 +13,7 @@ services:
 
   db:
     image: postgres:15
-    env_file:
-      - ./prod.env
+    env_file: ./prod.env
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USER}
